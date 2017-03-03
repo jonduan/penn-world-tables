@@ -22,10 +22,12 @@ def _get_dep_rates_data(base_url, version):
 
 def _get_pwt_data(base_url, version):
     """Download the Penn World Tables (PWT) data."""
-    tmp_url = base_url + 'v' + str(version) + '/pwt' + str(version) + '.zip'
+    tmp_url = base_url + '/pwt' + str(version) + '.dta'
     tmp_buffer = requests.get(url=tmp_url)
-    tmp_zip = zipfile.ZipFile(BytesIO(tmp_buffer.content))
-    tmp_zip.extract('pwt' + str(version) + '.dta')
+    #tmp_zip = zipfile.ZipFile(BytesIO(tmp_buffer.content))
+    #tmp_zip.extract('pwt' + str(version) + '.dta')
+    with open('pwt' + str(version) + '.dta', "wb") as data:
+        data.write(tmp_buffer.content)
 
 
 def _download_pwt_data(base_url, version):
@@ -35,7 +37,7 @@ def _download_pwt_data(base_url, version):
 
 
 def load_pwt_data(base_url='http://www.rug.nl/ggdc/docs/',
-                  version=80):
+                  version=90):
     """
     Load the Penn World Tables (PWT) data as a Pandas Panel object.
 
@@ -43,7 +45,7 @@ def load_pwt_data(base_url='http://www.rug.nl/ggdc/docs/',
     ----------
         base_url : str, optional(default='http://www.rug.nl/ggdc/docs/')
             Base url to use for the download.
-        version : int, optional(default=80)
+        version : int, optional(default=90)
             Version number for PWT data.
 
     Returns
